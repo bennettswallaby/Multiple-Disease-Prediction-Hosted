@@ -1,1 +1,1 @@
-streamlit run "C:\Users\divyansh\Desktop\Multiple Disease Prediction System\multiple disease pred.py"
+streamlit run "C:\Users\Your file directory\Desktop\Multiple Disease Prediction System\multiple disease pred.py"
