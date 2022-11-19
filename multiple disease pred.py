@@ -1,21 +1,25 @@
 import pickle
 import streamlit as st
+import pdfkit
+from jinja2 import Environment, PackageLoader, select_autoescape, FileSystemLoader
+from datetime import date
+from streamlit.components.v1 import iframe
 # from streamlit_option_menu import option_menu
 
 
 # loading the saved models
 
-diabetes_model = pickle.load(open('C:/Users/Sameer/Downloads/Multiple Disease Prediction System-20221119T041304Z-001/Multiple Disease Prediction System/saved models/diabetes_model.sav', 'rb'))
+diabetes_model = pickle.load(open('/Users/divyanshpalia/Desktop/Multiple Disease Prediction System/saved models/diabetes_model.sav', 'rb'))
 
-heart_disease_model = pickle.load(open('C:/Users/Sameer/Downloads/Multiple Disease Prediction System-20221119T041304Z-001/Multiple Disease Prediction System/saved models/heart_disease_model.sav','rb'))
+heart_disease_model = pickle.load(open('/Users/divyanshpalia/Desktop/Multiple Disease Prediction System/saved models/heart_disease_model.sav','rb'))
 
-parkinsons_model = pickle.load(open('C:/Users/Sameer/Downloads/Multiple Disease Prediction System-20221119T041304Z-001/Multiple Disease Prediction System/saved models/parkinsons_model.sav', 'rb'))
-breast_cancer_model=pickle.load(open('C:/Users/Sameer/Downloads/Multiple Disease Prediction System-20221119T041304Z-001/Multiple Disease Prediction System/saved models/breast_cancer_dataset.sav', 'rb'))
-
+parkinsons_model = pickle.load(open('/Users/divyanshpalia/Desktop/Multiple Disease Prediction System/saved models/parkinsons_model.sav', 'rb'))
+breast_cancer_model=pickle.load(open('/Users/divyanshpalia/Desktop/Multiple Disease Prediction System/saved models/breast_cancer_dataset.sav', 'rb'))
 
 # sidebar for navigation
 with st.sidebar:
-    selected=st.selectbox('Multiple Disease Prediction System',('Diabetes Prediction','Heart Disease Prediction','Parkinsons Prediction','Breast Cancer Prediction'))
+    st.title('Multiple Disease Prediction System')
+    selected=st.selectbox('Choose the disease :',('Diabetes Prediction','Heart Disease Prediction','Parkinsons Prediction','Breast Cancer Prediction'))
     # selected = option_menu('Multiple Disease Prediction System',
                           
     #                       ['Diabetes Prediction',
@@ -23,6 +27,32 @@ with st.sidebar:
     #                        'Parkinsons Prediction'],
     #                       icons=['activity','heart','person'],
     #                       default_index=0)
+
+    if(st.button('Bug Report')):
+        if(st.title('Bug Report Generated')):
+            st.text('Minor bugs reported...')
+            
+            left, right = st.columns(2)
+
+            form = left.form("template_form")
+            left, right = st.columns(2)
+
+            Download_Bug_Report = form.form_submit_button("Download Bug Report")
+            env = Environment(loader=FileSystemLoader("."), autoescape=select_autoescape())
+            template = env.get_template("template.html")
+            if Download_Bug_Report:
+                html = template.render(
+                    student='',
+                    course="",
+                    grade='',
+                    date=date.today().strftime(),)
+
+            pdf = pdfkit.from_string(html, False)
+            st.balloons()
+            "⬇️ Download PDF",
+            data=pdf,
+            file_name="bug-report.pdf",
+            mime="application/octet-stream",
     
     
 # Diabetes Prediction Page
